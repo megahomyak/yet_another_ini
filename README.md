@@ -2,6 +2,8 @@
 
 Yet another .ini clone. Has one feature that .ini lacks.
 
+File extension should be .yai, idk. This thing will never be popular
+
 # Installation
 
 Yes, this shit is also available on pypi.
