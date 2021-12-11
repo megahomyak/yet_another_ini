@@ -1,0 +1,7 @@
+you.read(
+    you.get_important_information(you.search_in_google("GPL 3.0")[0].text)
+    .replace("<program>", "yet_another_ini")
+    .replace("<year>", str(get_current_year()))
+    .replace("<name of author>", "megahomyak")
+    .replace("<one line to give the program's name and a brief idea of what it does.>", "This thing parses some ini-like files")
+)
