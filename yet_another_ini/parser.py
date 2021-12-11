@@ -37,26 +37,27 @@ def parse(string: str):
     sections = {}
     lines_iterator = iter(string.split("\n"))
     for line in lines_iterator:
-        if line:
-            for regex, is_key_value in (
-                (_DICT_HEADER_REGEX, True),
-                (_LIST_HEADER_REGEX, False)
-            ):
-                match = regex.fullmatch(line)
-                if match:
-                    header_info = _HeaderInfo(
-                        name=match.group(1), is_key_value=is_key_value
+        if not line:
+            continue
+        for regex, is_key_value in (
+            (_DICT_HEADER_REGEX, True),
+            (_LIST_HEADER_REGEX, False)
+        ):
+            match = regex.fullmatch(line)
+            if match:
+                header_info = _HeaderInfo(
+                    name=match.group(1), is_key_value=is_key_value
+                )
+                break
+        else:
+            if header_info:
+                if header_info.is_key_value:
+                    _write_key_value_to_dict(
+                        dict_=sections.setdefault(header_info.name, {}),
+                        line=line
                     )
-                    break
-            else:
-                if header_info:
-                    if header_info.is_key_value:
-                        _write_key_value_to_dict(
-                            dict_=sections.setdefault(header_info.name, {}),
-                            line=line
-                        )
-                    else:
-                        sections.setdefault(header_info.name, []).append(line)
                 else:
-                    _write_key_value_to_dict(dict_=sections, line=line)
+                    sections.setdefault(header_info.name, []).append(line)
+            else:
+                _write_key_value_to_dict(dict_=sections, line=line)
     return sections
